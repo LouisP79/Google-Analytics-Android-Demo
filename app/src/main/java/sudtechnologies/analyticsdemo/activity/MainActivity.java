@@ -2,17 +2,20 @@ package sudtechnologies.analyticsdemo.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import sudtechnologies.analyticsdemo.R;
+import sudtechnologies.analyticsdemo.fragment.AnonymousFragment;
+import sudtechnologies.analyticsdemo.fragment.CheckedFragment;
+import sudtechnologies.analyticsdemo.fragment.EmailFragment;
+import sudtechnologies.analyticsdemo.fragment.GoogleFragment;
+import sudtechnologies.analyticsdemo.fragment.PhoneFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView mTextMessage;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -23,38 +26,48 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        changeFragment(null);
+
         // [START start app event]
         Bundle params = new Bundle();
         params.putString("event", "app has started");
         mFirebaseAnalytics.logEvent("start_app", params);
         // [END start app event]
 
-        mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(item -> {
             // [START menu event]
             Bundle bundle = new Bundle();
-            bundle.putString("id_button"/*FirebaseAnalytics.Param.ITEM_ID*/, String.valueOf(item.getItemId()));
+            bundle.putString("id_button", String.valueOf(item.getItemId()));
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    bundle.putString("name_button"/*FirebaseAnalytics.Param.ITEM_NAME*/, getString(R.string.title_home));
+                case R.id.navigation_email:
+                    bundle.putString("name_button", getString(R.string.title_email));
+                    changeFragment(EmailFragment.newInstance());
                     break;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    bundle.putString("name_button"/*FirebaseAnalytics.Param.ITEM_NAME*/, getString(R.string.title_dashboard));
+                case R.id.navigation_google:
+                    bundle.putString("name_button", getString(R.string.title_google));
+                    changeFragment(GoogleFragment.newInstance());
                     break;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    bundle.putString("name_button"/*FirebaseAnalytics.Param.ITEM_NAME*/, getString(R.string.title_notifications));
+                case R.id.navigation_phone:
+                    bundle.putString("name_button", getString(R.string.title_phone));
+                    changeFragment(PhoneFragment.newInstance());
+                    break;
+                case R.id.navigation_anonymous:
+                    bundle.putString("name_button", getString(R.string.title_anonymous));
+                    changeFragment(AnonymousFragment.newInstance());
                     break;
             }
-            bundle.putString("type_button"/*FirebaseAnalytics.Param.CONTENT_TYPE*/, "menu");
-            mFirebaseAnalytics.logEvent("button_menu"/*FirebaseAnalytics.Event.SELECT_CONTENT*/, bundle);
+            bundle.putString("type_button", "menu");
+            mFirebaseAnalytics.logEvent("button_menu", bundle);
             Log.i("EVENTO INFO",bundle.toString());
             // [END menu event]
             return true;
         });
+    }
+
+    public void changeFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                fragment==null?EmailFragment.newInstance():fragment).commit();
     }
 
     @Override

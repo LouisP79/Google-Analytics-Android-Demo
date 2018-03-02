@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">AnalyticsDemo</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_email">Correo</string>
+    <string name="title_google">Google</string>
+    <string name="title_phone">Telefono</string>
+    <string name="title_anonymous">Anónimo</string>
+    <string name="user_logued">Usuario Logueado</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="login_phone">Iniciar sesión con tu telefono</string>
+    <string name="login_anonymous">Iniciar sesión de forma anónima</string>
+    <string name="email">Correo...</string>
+    <string name="password">Contraseña...</string>
 </resources>
