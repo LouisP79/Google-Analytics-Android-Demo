@@ -76,6 +76,12 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_email, container, false);
@@ -119,7 +125,7 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
                         mainActivity.closeDialog();
                         params.putString("status", "error");
                         loginEvent();
-                        Toast.makeText(getContext(),getString(R.string.validate_login_email),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
     }

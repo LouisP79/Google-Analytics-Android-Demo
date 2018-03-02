@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showMenu(){
         navigation.setVisibility(View.VISIBLE);
+        navigation.setSelectedItemId(R.id.navigation_email);
     }
 
     public void showDialog(String message){
@@ -98,16 +99,5 @@ public class MainActivity extends AppCompatActivity {
     public void logEvent(String event, Bundle bundle){
         mFirebaseAnalytics.logEvent(event, bundle);
     }
-
-    @Override
-    protected void onDestroy() {
-        // [START finish app event]
-        Bundle params = new Bundle();
-        params.putString("event", "app has finished");
-        mFirebaseAnalytics.logEvent("finish_app", params);
-        // [END finish app event]
-        super.onDestroy();
-    }
-
 
 }

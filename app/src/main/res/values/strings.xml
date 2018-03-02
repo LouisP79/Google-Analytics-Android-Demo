@@ -16,5 +16,4 @@
     <string name="validate_no_empty">Campo vacio</string>
     <string name="validate_email">Debe ingresar un correo válido</string>
     <string name="validate_password_lenght">La contraseña debe tener al menos 6 caracteres</string>
-    <string name="validate_login_email">Usuario o contraseña incorrectos</string>
 </resources>

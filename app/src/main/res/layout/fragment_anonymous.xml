@@ -8,6 +8,7 @@
     android:padding="20dp">
 
     <Button
+        android:id="@+id/btn_login_anonymous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_anonymous"
