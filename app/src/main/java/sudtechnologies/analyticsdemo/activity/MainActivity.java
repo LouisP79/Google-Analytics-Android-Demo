@@ -1,16 +1,17 @@
 package sudtechnologies.analyticsdemo.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import sudtechnologies.analyticsdemo.R;
 import sudtechnologies.analyticsdemo.fragment.AnonymousFragment;
-import sudtechnologies.analyticsdemo.fragment.CheckedFragment;
 import sudtechnologies.analyticsdemo.fragment.EmailFragment;
 import sudtechnologies.analyticsdemo.fragment.GoogleFragment;
 import sudtechnologies.analyticsdemo.fragment.PhoneFragment;
@@ -18,6 +19,8 @@ import sudtechnologies.analyticsdemo.fragment.PhoneFragment;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private BottomNavigationView navigation;
+    protected ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics.logEvent("start_app", params);
         // [END start app event]
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(item -> {
             // [START menu event]
             Bundle bundle = new Bundle();
@@ -68,6 +71,32 @@ public class MainActivity extends AppCompatActivity {
     public void changeFragment(Fragment fragment){
         getSupportFragmentManager().beginTransaction().replace(R.id.container,
                 fragment==null?EmailFragment.newInstance():fragment).commit();
+    }
+
+    public void hideMenu(){
+        navigation.setVisibility(View.GONE);
+    }
+
+    public void showMenu(){
+        navigation.setVisibility(View.VISIBLE);
+    }
+
+    public void showDialog(String message){
+        dialog = new ProgressDialog(this);
+        dialog.setMessage(message);
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    public void closeDialog() {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
+    public void logEvent(String event, Bundle bundle){
+        mFirebaseAnalytics.logEvent(event, bundle);
     }
 
     @Override

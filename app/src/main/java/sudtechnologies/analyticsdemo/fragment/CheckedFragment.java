@@ -5,8 +5,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import sudtechnologies.analyticsdemo.R;
+import sudtechnologies.analyticsdemo.activity.MainActivity;
 
 /**
  * Created by sud on 02/03/18.
@@ -14,7 +22,14 @@ import sudtechnologies.analyticsdemo.R;
 
 public class CheckedFragment extends Fragment{
 
+    @BindView(R.id.tv_name)
+    TextView tvName;
+
+    @BindView(R.id.tv_email)
+    TextView tvEmail;
+
     private static CheckedFragment fragment;
+    private MainActivity mainActivity;
 
     public CheckedFragment() {
         // Required empty public constructor
@@ -42,9 +57,33 @@ public class CheckedFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_cheked, container, false);
+        ButterKnife.bind(this, view);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mainActivity = (MainActivity) getActivity();
+
+        if(user!=null){
+            tvEmail.setText(user.getEmail());
+            tvName.setText(user.getDisplayName());
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cheked, container, false);
+        return view;
     }
 
+    @OnClick(R.id.btn_logout)
+    public void onClickLogout(){
+        FirebaseAuth.getInstance().signOut();
+        mainActivity.changeFragment(EmailFragment.newInstance());
+        mainActivity.showMenu();
+        // [START logout event]
+        Bundle params = new Bundle();
+        params.putString("event", "LogOut");
+        params.putString("status", "succefull");
+        mainActivity.logEvent("logout", params);
+        // [END logout event]
+    }
     
 }
