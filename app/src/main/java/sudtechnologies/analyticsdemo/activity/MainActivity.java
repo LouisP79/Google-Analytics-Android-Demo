@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setMessage(message);
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

@@ -70,8 +70,8 @@ public class CheckedFragment extends Fragment{
         mainActivity = (MainActivity) getActivity();
 
         if(user!=null){
-            tvEmail.setText(user.getEmail()!=""?user.getEmail():getString(R.string.anonymous_email));
-            tvName.setText(user.getDisplayName()!=""?user.getDisplayName():getString(R.string.anonymous_name));
+            tvEmail.setText(user.getEmail()!=null&&user.getEmail()!=""?user.getEmail():getString(R.string.anonymous_email));
+            tvName.setText(user.getDisplayName()!=null&&user.getDisplayName()!=""?user.getDisplayName():getString(R.string.anonymous_name));
             Picasso.with(getContext())
                     .load(user.getPhotoUrl())
                     .placeholder(R.drawable.ic_account_check)
