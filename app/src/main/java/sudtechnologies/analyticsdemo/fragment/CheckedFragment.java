@@ -65,9 +65,9 @@ public class CheckedFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cheked, container, false);
         ButterKnife.bind(this, view);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         mainActivity = (MainActivity) getActivity();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user!=null){
             tvEmail.setText(user.getEmail()!=null&&user.getEmail()!=""?user.getEmail():getString(R.string.anonymous_email));
