@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +29,9 @@ public class CheckedFragment extends Fragment{
 
     @BindView(R.id.tv_email)
     TextView tvEmail;
+
+    @BindView(R.id.iv_avatar)
+    ImageView ivAvatar;
 
     private static CheckedFragment fragment;
     private MainActivity mainActivity;
@@ -65,8 +70,13 @@ public class CheckedFragment extends Fragment{
         mainActivity = (MainActivity) getActivity();
 
         if(user!=null){
-            tvEmail.setText(user.getEmail());
-            tvName.setText(user.getDisplayName());
+            tvEmail.setText(user.getEmail()!=""?user.getEmail():getString(R.string.anonymous_email));
+            tvName.setText(user.getDisplayName()!=""?user.getDisplayName():getString(R.string.anonymous_name));
+            Picasso.with(getContext())
+                    .load(user.getPhotoUrl())
+                    .placeholder(R.drawable.ic_account_check)
+                    .error(R.drawable.ic_account_check)
+                    .into(ivAvatar);
         }
 
         // Inflate the layout for this fragment

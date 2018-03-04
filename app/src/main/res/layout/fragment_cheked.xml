@@ -2,16 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center">
 
     <ImageView
+        android:id="@+id/iv_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/green"
         app:srcCompat="@drawable/ic_account_check"/>
     <TextView
         android:layout_width="wrap_content"
@@ -25,12 +24,12 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Nombre del Usuario"/>
+        android:text="@string/anonymous_name"/>
     <TextView
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Correo del usuario"/>
+        android:text="@string/anonymous_email"/>
 
     <Button
         android:id="@+id/btn_logout"
