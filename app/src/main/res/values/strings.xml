@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AnalyticsDemo</string>
+    <string name="app_name">Analytics Demo</string>
     <string name="title_email">Correo</string>
     <string name="title_google">Google</string>
     <string name="title_phone">Telefono</string>

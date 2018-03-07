@@ -37,6 +37,7 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
     private MainActivity mainActivity;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Bundle params;
 
     public GoogleFragment() {
         // Required empty public constructor
@@ -81,6 +82,8 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
 
         mainActivity = (MainActivity) getActivity();
 
+        params = new Bundle();
+
         if(googleApiClient==null) {
             GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
@@ -99,6 +102,8 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
                 mainActivity.changeFragment(CheckedFragment.newInstance());
                 mainActivity.hideMenu();
                 mainActivity.closeDialog();
+                params.putString("status", "succefull");
+                loginEvent();
             }
         };
 
@@ -109,6 +114,7 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
     @OnClick(R.id.sign_in_button)
     public void onClickSignIn(){
         mainActivity.showDialog(getString(R.string.loading));
+        params.putString("event", "LogInGoogle");
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(intent,SIGN_IN_CODE);
     }
@@ -122,9 +128,17 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
                 authFirebase(result.getSignInAccount());
             }else {
                 mainActivity.closeDialog();
+                params.putString("status", "errorGoogle");
+                loginEvent();
                 Toast.makeText(getContext(),getString(R.string.validate_google_error),Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void loginEvent(){
+        // [START login event]
+        mainActivity.logEvent("login", params);
+        // [END login event]
     }
 
     private void authFirebase(GoogleSignInAccount signInAccount) {
@@ -132,6 +146,8 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
         mAuth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
+                params.putString("status", "errorFirebase");
+                loginEvent();
                 Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
