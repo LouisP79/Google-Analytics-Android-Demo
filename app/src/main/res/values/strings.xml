@@ -20,7 +20,7 @@
     <string name="anonymous_name">Nombre Anónimo</string>
     <string name="anonymous_email">Correo Anónimo</string>
     <string name="anonymous_phone">Telefono Anónimo</string>
-    <string name="phone">Telefono</string>
+    <string name="phone">(+Cod)Telefono</string>
     <string name="code">Código</string>
 
     <string name="validate_no_empty">Campo vacio</string>
