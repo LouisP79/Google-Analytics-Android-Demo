@@ -30,6 +30,9 @@ public class CheckedFragment extends Fragment{
     @BindView(R.id.tv_email)
     TextView tvEmail;
 
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;
+
     @BindView(R.id.iv_avatar)
     ImageView ivAvatar;
 
@@ -70,6 +73,7 @@ public class CheckedFragment extends Fragment{
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user!=null){
+            tvPhone.setText(user.getPhoneNumber()!=null&&user.getPhoneNumber()!=""?user.getPhoneNumber():getString(R.string.anonymous_phone));
             tvEmail.setText(user.getEmail()!=null&&user.getEmail()!=""?user.getEmail():getString(R.string.anonymous_email));
             tvName.setText(user.getDisplayName()!=null&&user.getDisplayName()!=""?user.getDisplayName():getString(R.string.anonymous_name));
             Picasso.with(getContext())

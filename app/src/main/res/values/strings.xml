@@ -8,16 +8,28 @@
     <string name="logout">Cerrar Sesión</string>
     <string name="login">Iniciar Sesión</string>
     <string name="login_phone">Iniciar sesión con tu telefono</string>
+    <string name="send_sms">Recibir código de verificación</string>
+    <string name="sms_sended">Código enviado</string>
+    <string name="check_code">Verificar código</string>
+    <string name="resend_sms">Reenviar código de verificación</string>
     <string name="login_anonymous">Iniciar sesión de forma anónima</string>
     <string name="email">Correo...</string>
     <string name="password">Contraseña...</string>
     <string name="loading">Cargando...</string>
+    <string name="sending_code">Enviando código...</string>
     <string name="anonymous_name">Nombre Anónimo</string>
     <string name="anonymous_email">Correo Anónimo</string>
+    <string name="anonymous_phone">Telefono Anónimo</string>
+    <string name="phone">Telefono</string>
+    <string name="code">Código</string>
 
     <string name="validate_no_empty">Campo vacio</string>
     <string name="validate_email">Debe ingresar un correo válido</string>
     <string name="validate_password_lenght">La contraseña debe tener al menos 6 caracteres</string>
     <string name="validate_google_error">No de logró concretar la sesión</string>
     <string name="validate_google_error_conection">Error en la comunicación al intentar loguear</string>
+
+
+    <string name="error_phone_timeout">Se agoto el tiempo de espera del mensaje, verifíquelo manualamente</string>
+    <string name="error_phone_bad_request">Error en el envio del mensaje: %s</string>
 </resources>
