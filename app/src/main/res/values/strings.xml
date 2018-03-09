@@ -29,7 +29,9 @@
     <string name="validate_google_error">No de logró concretar la sesión</string>
     <string name="validate_google_error_conection">Error en la comunicación al intentar loguear</string>
 
-
     <string name="error_phone_timeout">Se agoto el tiempo de espera del mensaje, verifíquelo manualamente</string>
     <string name="error_phone_bad_request">Error en el envio del mensaje: %s</string>
+
+    <string name="facebook_app_id">202711107150826</string>
+    <string name="fb_login_protocol_scheme">fb202711107150826</string>
 </resources>
