@@ -138,6 +138,8 @@ public class CheckedFragment extends Fragment{
 
     @OnClick(R.id.btn_forece_crash)
     public void onForceCrash(){
+        Crashlytics.log("Force Crash!");
+        Crashlytics.logException(new Exception("Ops!"));
         Crashlytics.getInstance().crash();
     }
     
