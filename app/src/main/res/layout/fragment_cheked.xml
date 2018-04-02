@@ -7,6 +7,16 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="40dp"
+        android:text="@string/message_unknow"/>
+
     <ImageView
         android:id="@+id/iv_avatar"
         android:layout_width="wrap_content"
@@ -19,7 +29,6 @@
         android:textStyle="bold"
         android:layout_marginBottom="40dp"
         android:text="@string/user_logued"/>
-
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
@@ -42,4 +51,13 @@
         android:layout_height="wrap_content"
         android:text="@string/logout"
         android:layout_marginTop="40dp"/>
+
+    <Button
+        android:id="@+id/btn_forece_crash"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/force_crash"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 </LinearLayout>

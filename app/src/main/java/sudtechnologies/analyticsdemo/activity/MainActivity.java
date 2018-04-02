@@ -8,8 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import io.fabric.sdk.android.Fabric;
+import sudtechnologies.analyticsdemo.BuildConfig;
 import sudtechnologies.analyticsdemo.R;
 import sudtechnologies.analyticsdemo.fragment.AnonymousFragment;
 import sudtechnologies.analyticsdemo.fragment.EmailFragment;
@@ -19,15 +26,35 @@ import sudtechnologies.analyticsdemo.fragment.PhoneFragment;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private BottomNavigationView navigation;
     protected ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
+        //identified the user [Crashlytics]
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            Crashlytics.setUserIdentifier(user.getUid()!=null?user.getUid():getString(R.string.anonymous_id));
+            Crashlytics.setUserName(user.getDisplayName()!=null?user.getDisplayName():getString(R.string.anonymous_name));
+            Crashlytics.setUserEmail(user.getEmail()!=null?user.getEmail():getString(R.string.anonymous_email));
+        }else
+            Crashlytics.setUserIdentifier(getString(R.string.anonymous_id));
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+        //[RemoteConfig]
+        mFirebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build());
+
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        //[RemoteConfig]
 
         changeFragment(null);
 
@@ -66,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
             // [END menu event]
             return true;
         });
+    }
+
+    public FirebaseRemoteConfig getmFirebaseRemoteConfig() {
+        return mFirebaseRemoteConfig;
     }
 
     public void changeFragment(Fragment fragment){

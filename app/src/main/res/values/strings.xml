@@ -5,7 +5,9 @@
     <string name="title_phone">Telefono</string>
     <string name="title_anonymous">Anónimo</string>
     <string name="user_logued">Usuario Logueado</string>
+    <string name="message_unknow">Mensaje Desconocido</string>
     <string name="logout">Cerrar Sesión</string>
+    <string name="force_crash">Forzar Error de la App</string>
     <string name="login">Iniciar Sesión</string>
     <string name="login_phone">Iniciar sesión con tu telefono</string>
     <string name="send_sms">Recibir código de verificación</string>
@@ -17,11 +19,13 @@
     <string name="password">Contraseña...</string>
     <string name="loading">Cargando...</string>
     <string name="sending_code">Enviando código...</string>
+    <string name="anonymous_id">No Logueado</string>
     <string name="anonymous_name">Nombre Anónimo</string>
     <string name="anonymous_email">Correo Anónimo</string>
     <string name="anonymous_phone">Telefono Anónimo</string>
     <string name="phone">(+Cod)Telefono</string>
     <string name="code">Código</string>
+    <string name="remote_config_fetch_success">Fetch RemoteConfig exitoso</string>
 
     <string name="validate_no_empty">Campo vacio</string>
     <string name="validate_email">Debe ingresar un correo válido</string>
@@ -31,7 +35,5 @@
 
     <string name="error_phone_timeout">Se agoto el tiempo de espera del mensaje, verifíquelo manualamente</string>
     <string name="error_phone_bad_request">Error en el envio del mensaje: %s</string>
-
-    <string name="facebook_app_id">202711107150826</string>
-    <string name="fb_login_protocol_scheme">fb202711107150826</string>
+    <string name="error_remote_config_fetch">Error al intentar hacer el fetch con RemoteConfig</string>
 </resources>
