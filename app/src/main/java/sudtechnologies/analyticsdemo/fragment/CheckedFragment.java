@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.squareup.picasso.Picasso;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -96,7 +98,7 @@ public class CheckedFragment extends Fragment{
         //[RemoteConfig]
         mFirebaseRemoteConfig = ((MainActivity) getActivity()).getmFirebaseRemoteConfig();
 
-        mFirebaseRemoteConfig.fetch(0)
+        mFirebaseRemoteConfig.fetch(mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled() ? 0 : TimeUnit.HOURS.toSeconds(1))
                 .addOnCompleteListener(getActivity(), task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getContext(), getString(R.string.remote_config_fetch_success),

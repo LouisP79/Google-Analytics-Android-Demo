@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnalyticsDemo.iml" filepath="$PROJECT_DIR$/AnalyticsDemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Google-Analytics-Android-Demo.iml" filepath="$PROJECT_DIR$/Google-Analytics-Android-Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
