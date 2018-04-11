@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -124,6 +125,9 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
                     if(!task.isSuccessful()){
                         mainActivity.closeDialog();
                         params.putString("status", "error");
+
+                        Crashlytics.log(task.toString());
+
                         loginEvent();
                         Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                     }

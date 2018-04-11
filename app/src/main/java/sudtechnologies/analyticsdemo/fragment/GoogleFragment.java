@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -129,6 +130,9 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
             }else {
                 mainActivity.closeDialog();
                 params.putString("status", "errorGoogle");
+
+                Crashlytics.log(result.toString());
+
                 loginEvent();
                 Toast.makeText(getContext(),getString(R.string.validate_google_error),Toast.LENGTH_SHORT).show();
             }
@@ -147,6 +151,9 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "errorFirebase");
+
+                Crashlytics.log(task.toString());
+
                 loginEvent();
                 Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
             }

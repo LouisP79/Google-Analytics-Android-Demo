@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -104,6 +105,9 @@ public class AnonymousFragment extends Fragment{
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "error");
+
+                Crashlytics.log(task.toString());
+
                 loginEvent();
                 Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
             }

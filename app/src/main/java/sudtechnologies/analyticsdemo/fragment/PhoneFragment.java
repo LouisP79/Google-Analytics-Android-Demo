@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -209,6 +210,9 @@ public class PhoneFragment extends Fragment {
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "error");
+
+                Crashlytics.log(task.toString());
+
                 loginEvent();
                 Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
             }
