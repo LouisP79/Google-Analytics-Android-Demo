@@ -19,8 +19,6 @@ import com.google.firebase.perf.metrics.Trace;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
-import java.util.Random;
-
 import io.fabric.sdk.android.Fabric;
 import sudtechnologies.analyticsdemo.BuildConfig;
 import sudtechnologies.analyticsdemo.R;
