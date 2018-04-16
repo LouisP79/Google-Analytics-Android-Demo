@@ -13,6 +13,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.Trace;
+
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,9 +29,16 @@ import sudtechnologies.analyticsdemo.activity.MainActivity;
 
 public class AnonymousFragment extends Fragment{
 
+    private static final String ARG_TRACE = "trace";
+    private static final String TRACE_LOGIN_SUCCESS = "login_succes";
+    private static final String TRACE_LOGIN_ERROR = "login_error";
+
     private static AnonymousFragment fragment;
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Trace myTrace;
+
     private MainActivity mainActivity;
     private Bundle params;
 
@@ -35,15 +46,23 @@ public class AnonymousFragment extends Fragment{
         // Required empty public constructor
     }
 
-    public static AnonymousFragment newInstance(/*String param1*/) {
+    public static AnonymousFragment newInstance(Trace trace) {
 
         if(fragment==null)
             fragment = new AnonymousFragment();
 
         Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);*/
+        args.putParcelable(ARG_TRACE, trace);
         fragment.setArguments(args);
+
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null)
+            myTrace = getArguments().getParcelable(ARG_TRACE);
     }
 
     @Override
@@ -56,14 +75,6 @@ public class AnonymousFragment extends Fragment{
     public void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);*/
-        }
     }
 
     @Override
@@ -83,6 +94,7 @@ public class AnonymousFragment extends Fragment{
                 mainActivity.hideMenu();
                 mainActivity.closeDialog();
                 params.putString("status", "succefull");
+                myTrace.incrementCounter(TRACE_LOGIN_SUCCESS);
                 loginEvent();
             }
         };
@@ -105,6 +117,7 @@ public class AnonymousFragment extends Fragment{
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "error");
+                myTrace.incrementCounter(TRACE_LOGIN_ERROR);
 
                 Crashlytics.log(task.toString());
 

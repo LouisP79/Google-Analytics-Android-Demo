@@ -2,18 +2,24 @@ package sudtechnologies.analyticsdemo.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.Trace;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+import java.util.Random;
 
 import io.fabric.sdk.android.Fabric;
 import sudtechnologies.analyticsdemo.BuildConfig;
@@ -23,10 +29,14 @@ import sudtechnologies.analyticsdemo.fragment.EmailFragment;
 import sudtechnologies.analyticsdemo.fragment.GoogleFragment;
 import sudtechnologies.analyticsdemo.fragment.PhoneFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+
+    private static final String TRACE = "App_Main_Trace";
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private Trace myTrace;
+
     private BottomNavigationView navigation;
     protected ProgressDialog dialog;
 
@@ -44,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             Crashlytics.setUserEmail(user.getEmail()!=null?user.getEmail():getString(R.string.anonymous_email));
         }else
             Crashlytics.setUserIdentifier(getString(R.string.anonymous_id));
+        //identified the user [Crashlytics]
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -65,38 +76,58 @@ public class MainActivity extends AppCompatActivity {
         // [END start app event]
 
         navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(item -> {
-            // [START menu event]
-            Bundle bundle = new Bundle();
-            bundle.putString("id_button", String.valueOf(item.getItemId()));
-            switch (item.getItemId()) {
-                case R.id.navigation_email:
-                    bundle.putString("name_button", getString(R.string.title_email));
-                    changeFragment(EmailFragment.newInstance());
-                    break;
-                case R.id.navigation_google:
-                    bundle.putString("name_button", getString(R.string.title_google));
-                    changeFragment(GoogleFragment.newInstance());
-                    break;
-                case R.id.navigation_phone:
-                    bundle.putString("name_button", getString(R.string.title_phone));
-                    changeFragment(PhoneFragment.newInstance());
-                    break;
-                case R.id.navigation_anonymous:
-                    bundle.putString("name_button", getString(R.string.title_anonymous));
-                    changeFragment(AnonymousFragment.newInstance());
-                    break;
-            }
-            bundle.putString("type_button", "menu");
-            mFirebaseAnalytics.logEvent("button_menu", bundle);
-            Log.i("EVENTO INFO",bundle.toString());
-            // [END menu event]
-            return true;
-        });
+        navigation.setOnNavigationItemSelectedListener(this);
+
+        // [Performance]
+        myTrace = FirebasePerformance.getInstance().newTrace(TRACE);
+        myTrace.start();
+        // [Performance]
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // [Performance]
+        myTrace.stop();
+        // [Performance]
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // [START menu event]
+        Bundle bundle = new Bundle();
+        bundle.putString("id_button", String.valueOf(item.getItemId()));
+        switch (item.getItemId()) {
+            case R.id.navigation_email:
+                bundle.putString("name_button", getString(R.string.title_email));
+                changeFragment(EmailFragment.newInstance());
+                break;
+            case R.id.navigation_google:
+                bundle.putString("name_button", getString(R.string.title_google));
+                changeFragment(GoogleFragment.newInstance());
+                break;
+            case R.id.navigation_phone:
+                bundle.putString("name_button", getString(R.string.title_phone));
+                changeFragment(PhoneFragment.newInstance());
+                break;
+            case R.id.navigation_anonymous:
+                bundle.putString("name_button", getString(R.string.title_anonymous));
+                changeFragment(AnonymousFragment.newInstance(myTrace));
+                break;
+        }
+        bundle.putString("type_button", "menu");
+        mFirebaseAnalytics.logEvent("button_menu", bundle);
+        Log.i("EVENTO INFO",bundle.toString());
+        // [END menu event]
+        return true;
     }
 
     public FirebaseRemoteConfig getmFirebaseRemoteConfig() {
         return mFirebaseRemoteConfig;
+    }
+
+    public Trace getMyTrace() {
+        return myTrace;
     }
 
     public void changeFragment(Fragment fragment){
@@ -131,5 +162,4 @@ public class MainActivity extends AppCompatActivity {
     public void logEvent(String event, Bundle bundle){
         mFirebaseAnalytics.logEvent(event, bundle);
     }
-
 }
