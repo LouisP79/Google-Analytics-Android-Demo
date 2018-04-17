@@ -132,12 +132,5 @@ public class CheckedFragment extends Fragment{
         mainActivity.logEvent("logout", params);
         // [END logout event]
     }
-
-    @OnClick(R.id.btn_forece_crash)
-    public void onForceCrash(){
-        Crashlytics.log("Force Crash!");
-        Crashlytics.logException(new Exception("Ops!"));
-        Crashlytics.getInstance().crash();
-    }
     
 }

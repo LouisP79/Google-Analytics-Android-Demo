@@ -52,12 +52,4 @@
         android:text="@string/logout"
         android:layout_marginTop="40dp"/>
 
-    <Button
-        android:id="@+id/btn_forece_crash"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/force_crash"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
 </LinearLayout>
