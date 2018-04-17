@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.perf.metrics.Trace;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -30,6 +31,10 @@ import sudtechnologies.analyticsdemo.activity.MainActivity;
 
 public class EmailFragment extends Fragment implements Validator.ValidationListener{
 
+    private static final String ARG_TRACE = "trace";
+    private static final String TRACE_LOGIN_SUCCESS = "login_email_succes";
+    private static final String TRACE_LOGIN_ERROR = "login_email_error";
+
     @BindView(R.id.et_email)
     @NotEmpty(messageResId = R.string.validate_no_empty)
     @Email(messageResId = R.string.validate_email)
@@ -46,17 +51,18 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
     private FirebaseAuth.AuthStateListener mAuthListener;
     private MainActivity mainActivity;
     private Bundle params;
+    private Trace myTrace;
 
     public EmailFragment() {
         // Required empty public constructor
     }
 
-    public static EmailFragment newInstance(/*String param1*/) {
+    public static EmailFragment newInstance(Trace trace) {
         if(fragment==null)
             fragment = new EmailFragment();
 
         Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);*/
+        args.putParcelable(ARG_TRACE, trace);
         fragment.setArguments(args);
 
         return fragment;
@@ -66,7 +72,7 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);*/
+            myTrace = getArguments().getParcelable(ARG_TRACE);
         }
     }
 
@@ -102,6 +108,9 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
                 mainActivity.hideMenu();
                 mainActivity.closeDialog();
                 params.putString("status", "succefull");
+                // [Performance]
+                myTrace.incrementCounter(TRACE_LOGIN_SUCCESS);
+                // [Performance]
                 loginEvent();
             }
         };
@@ -125,6 +134,9 @@ public class EmailFragment extends Fragment implements Validator.ValidationListe
                     if(!task.isSuccessful()){
                         mainActivity.closeDialog();
                         params.putString("status", "error");
+                        // [Performance]
+                        myTrace.incrementCounter(TRACE_LOGIN_ERROR);
+                        // [Performance]
 
                         Crashlytics.log(task.toString());
 

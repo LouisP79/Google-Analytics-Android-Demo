@@ -98,15 +98,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_email:
                 bundle.putString("name_button", getString(R.string.title_email));
-                changeFragment(EmailFragment.newInstance());
+                changeFragment(EmailFragment.newInstance(myTrace));
                 break;
             case R.id.navigation_google:
                 bundle.putString("name_button", getString(R.string.title_google));
-                changeFragment(GoogleFragment.newInstance());
+                changeFragment(GoogleFragment.newInstance(myTrace));
                 break;
             case R.id.navigation_phone:
                 bundle.putString("name_button", getString(R.string.title_phone));
-                changeFragment(PhoneFragment.newInstance());
+                changeFragment(PhoneFragment.newInstance(myTrace));
                 break;
             case R.id.navigation_anonymous:
                 bundle.putString("name_button", getString(R.string.title_anonymous));
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void changeFragment(Fragment fragment){
         getSupportFragmentManager().beginTransaction().replace(R.id.container,
-                fragment==null?EmailFragment.newInstance():fragment).commit();
+                fragment==null?EmailFragment.newInstance(myTrace):fragment).commit();
     }
 
     public void hideMenu(){

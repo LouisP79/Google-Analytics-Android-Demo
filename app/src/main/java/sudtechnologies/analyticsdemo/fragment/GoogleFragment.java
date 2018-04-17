@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.perf.metrics.Trace;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,6 +33,9 @@ import sudtechnologies.analyticsdemo.activity.MainActivity;
 public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final int SIGN_IN_CODE = 777;
+    private static final String ARG_TRACE = "trace";
+    private static final String TRACE_LOGIN_SUCCESS = "login_google_succes";
+    private static final String TRACE_LOGIN_ERROR = "login_google_error";
 
     private static GoogleFragment fragment;
     private GoogleApiClient googleApiClient;
@@ -39,19 +43,21 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Bundle params;
+    private Trace myTrace;
 
     public GoogleFragment() {
         // Required empty public constructor
     }
 
-    public static GoogleFragment newInstance(/*String param1*/) {
+    public static GoogleFragment newInstance(Trace trace) {
 
         if(fragment==null)
             fragment = new GoogleFragment();
 
         Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);*/
+        args.putParcelable(ARG_TRACE, trace);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -59,7 +65,7 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);*/
+            myTrace = getArguments().getParcelable(ARG_TRACE);
         }
     }
 
@@ -104,6 +110,9 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
                 mainActivity.hideMenu();
                 mainActivity.closeDialog();
                 params.putString("status", "succefull");
+                // [Performance]
+                myTrace.incrementCounter(TRACE_LOGIN_SUCCESS);
+                // [Performance]
                 loginEvent();
             }
         };
@@ -130,6 +139,9 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
             }else {
                 mainActivity.closeDialog();
                 params.putString("status", "errorGoogle");
+                // [Performance]
+                myTrace.incrementCounter(TRACE_LOGIN_ERROR);
+                // [Performance]
 
                 Crashlytics.log(result.toString());
 
@@ -151,6 +163,9 @@ public class GoogleFragment extends Fragment implements GoogleApiClient.OnConnec
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "errorFirebase");
+                // [Performance]
+                myTrace.incrementCounter(TRACE_LOGIN_ERROR);
+                // [Performance]
 
                 Crashlytics.log(task.toString());
 

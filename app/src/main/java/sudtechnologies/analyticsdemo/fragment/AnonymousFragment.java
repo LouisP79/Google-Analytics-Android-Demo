@@ -30,8 +30,8 @@ import sudtechnologies.analyticsdemo.activity.MainActivity;
 public class AnonymousFragment extends Fragment{
 
     private static final String ARG_TRACE = "trace";
-    private static final String TRACE_LOGIN_SUCCESS = "login_succes";
-    private static final String TRACE_LOGIN_ERROR = "login_error";
+    private static final String TRACE_LOGIN_SUCCESS = "login_anonymous_succes";
+    private static final String TRACE_LOGIN_ERROR = "login_anonymous_error";
 
     private static AnonymousFragment fragment;
 
@@ -94,7 +94,9 @@ public class AnonymousFragment extends Fragment{
                 mainActivity.hideMenu();
                 mainActivity.closeDialog();
                 params.putString("status", "succefull");
+                // [Performance]
                 myTrace.incrementCounter(TRACE_LOGIN_SUCCESS);
+                // [Performance]
                 loginEvent();
             }
         };
@@ -117,7 +119,9 @@ public class AnonymousFragment extends Fragment{
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "error");
+                // [Performance]
                 myTrace.incrementCounter(TRACE_LOGIN_ERROR);
+                // [Performance]
 
                 Crashlytics.log(task.toString());
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.perf.metrics.Trace;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +32,7 @@ public class CheckedFragment extends Fragment{
 
     private static final String MESSAGE = "message";
     private static final String ALL_CAPS = "all_caps";
+    private static final String ARG_TRACE = "trace";
 
     @BindView(R.id.tv_message)
     TextView tvMessage;
@@ -50,29 +52,20 @@ public class CheckedFragment extends Fragment{
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private static CheckedFragment fragment;
     private MainActivity mainActivity;
+    private Trace myTrace;
 
     public CheckedFragment() {
         // Required empty public constructor
     }
 
-    public static CheckedFragment newInstance(/*String param1*/) {
+    public static CheckedFragment newInstance() {
 
         if(fragment==null)
             fragment = new CheckedFragment();
 
-        Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);*/
-        fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);*/
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +74,8 @@ public class CheckedFragment extends Fragment{
         ButterKnife.bind(this, view);
 
         mainActivity = (MainActivity) getActivity();
+
+        myTrace = mainActivity.getMyTrace();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -128,7 +123,7 @@ public class CheckedFragment extends Fragment{
     @OnClick(R.id.btn_logout)
     public void onClickLogout(){
         FirebaseAuth.getInstance().signOut();
-        mainActivity.changeFragment(EmailFragment.newInstance());
+        mainActivity.changeFragment(EmailFragment.newInstance(myTrace));
         mainActivity.showMenu();
         // [START logout event]
         Bundle params = new Bundle();

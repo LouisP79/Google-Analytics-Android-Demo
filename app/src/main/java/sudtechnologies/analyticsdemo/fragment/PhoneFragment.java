@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.perf.metrics.Trace;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +33,9 @@ import sudtechnologies.analyticsdemo.activity.MainActivity;
 public class PhoneFragment extends Fragment {
 
     private static final int SECONDS = 120;
+    private static final String ARG_TRACE = "trace";
+    private static final String TRACE_LOGIN_SUCCESS = "login_phone_succes";
+    private static final String TRACE_LOGIN_ERROR = "login_phone_error";
 
     @BindView(R.id.et_phone)
     EditText etPhone;
@@ -52,6 +56,7 @@ public class PhoneFragment extends Fragment {
     private Bundle params;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
+    private Trace myTrace;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
@@ -93,14 +98,15 @@ public class PhoneFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PhoneFragment newInstance(/*String param1*/) {
+    public static PhoneFragment newInstance(Trace trace) {
 
         if (fragment == null)
             fragment = new PhoneFragment();
 
         Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);*/
+        args.putParcelable(ARG_TRACE, trace);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -108,7 +114,7 @@ public class PhoneFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);*/
+            myTrace = getArguments().getParcelable(ARG_TRACE);
         }
     }
 
@@ -141,6 +147,9 @@ public class PhoneFragment extends Fragment {
                 mainActivity.hideMenu();
                 mainActivity.closeDialog();
                 params.putString("status", "succefull");
+                // [Performance]
+                myTrace.incrementCounter(TRACE_LOGIN_SUCCESS);
+                // [Performance]
                 loginEvent();
             }
         };
@@ -210,6 +219,9 @@ public class PhoneFragment extends Fragment {
             if(!task.isSuccessful()){
                 mainActivity.closeDialog();
                 params.putString("status", "error");
+                // [Performance]
+                myTrace.incrementCounter(TRACE_LOGIN_ERROR);
+                // [Performance]
 
                 Crashlytics.log(task.toString());
 
