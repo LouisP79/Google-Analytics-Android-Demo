@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
         //[RemoteConfig]
 
-        changeFragment(null);
-
         // [START start app event]
         Bundle params = new Bundle();
         params.putString("event", "app has started");
@@ -80,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         myTrace = FirebasePerformance.getInstance().newTrace(TRACE);
         myTrace.start();
         // [Performance]
+
+        changeFragment(null);
     }
 
     @Override
