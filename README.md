@@ -1,17 +1,17 @@
 # Google-Analytics-Android-Demo
 
-## Firebase Cloud Messaging
-
-## Firebase Cloud Firestore
-
 ## Firebase Analytics
 
 ## Firebase Authentication
 
-## Firebase Remote Config
-
 ## Firebase Crashlytics
 
+## Firebase Cloud Firestore
+
+## Firebase Cloud Messaging
+
 ## Firebase Performace
+
+## Firebase Remote Config
 
 ## Builds Variants
