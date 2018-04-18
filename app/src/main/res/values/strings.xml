@@ -7,6 +7,8 @@
     <string name="user_logued">Usuario Logueado</string>
     <string name="message_unknow">Mensaje Desconocido</string>
     <string name="logout">Cerrar Sesión</string>
+    <string name="users">Usuarios</string>
+    <string name="user_loged">Usuario Logeado</string>
     <string name="force_crash">Forzar Error de la App</string>
     <string name="login">Iniciar Sesión</string>
     <string name="login_phone">Iniciar sesión con tu telefono</string>
@@ -36,4 +38,9 @@
     <string name="error_phone_timeout">Se agoto el tiempo de espera del mensaje, verifíquelo manualamente</string>
     <string name="error_phone_bad_request">Error en el envio del mensaje: %s</string>
     <string name="error_remote_config_fetch">Error al intentar hacer el fetch con RemoteConfig</string>
+    <string name="error_firestore_get">Error al intentar obtener los datos de Firestore</string>
+
+
+    <string name="blank_2s_s">%s %s</string>
+
 </resources>

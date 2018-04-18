@@ -32,7 +32,6 @@ public class CheckedFragment extends Fragment{
 
     private static final String MESSAGE = "message";
     private static final String ALL_CAPS = "all_caps";
-    private static final String ARG_TRACE = "trace";
 
     @BindView(R.id.tv_message)
     TextView tvMessage;
@@ -51,6 +50,7 @@ public class CheckedFragment extends Fragment{
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private static CheckedFragment fragment;
+
     private MainActivity mainActivity;
     private Trace myTrace;
 
@@ -96,14 +96,16 @@ public class CheckedFragment extends Fragment{
         mFirebaseRemoteConfig.fetch(mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled() ? 0 : TimeUnit.HOURS.toSeconds(1))
                 .addOnCompleteListener(getActivity(), task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), getString(R.string.remote_config_fetch_success),
+                        if(getContext()!=null)
+                            Toast.makeText(getContext(), getString(R.string.remote_config_fetch_success),
                                 Toast.LENGTH_SHORT).show();
 
                         // After config data is successfully fetched, it must be activated before newly fetched
                         // values are returned.
                         mFirebaseRemoteConfig.activateFetched();
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.error_remote_config_fetch),
+                        if(getContext()!=null)
+                            Toast.makeText(getContext(), getString(R.string.error_remote_config_fetch),
                                 Toast.LENGTH_SHORT).show();
                         Crashlytics.log(task.toString());
                     }
@@ -131,6 +133,11 @@ public class CheckedFragment extends Fragment{
         params.putString("status", "succefull");
         mainActivity.logEvent("logout", params);
         // [END logout event]
+    }
+
+    @OnClick(R.id.btn_users)
+    public void onClickUsers(){
+        mainActivity.changeFragment(UsersFragment.newInstance());
     }
     
 }
