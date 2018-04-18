@@ -4,11 +4,11 @@
 
 ## Firebase Authentication
 
-## Firebase Crashlytics
-
 ## Firebase Cloud Firestore
 
 ## Firebase Cloud Messaging
+
+## Firebase Crashlytics
 
 ## Firebase Performace
 
