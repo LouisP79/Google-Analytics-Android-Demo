@@ -2,6 +2,8 @@
 
 ## Firebase Cloud Messaging
 
+## Firebase Cloud Firestore
+
 ## Firebase Analytics
 
 ## Firebase Authentication
@@ -11,7 +13,5 @@
 ## Firebase Crashlytics
 
 ## Firebase Performace
-
-## Cloud Firestore
 
 ## Builds Variants
